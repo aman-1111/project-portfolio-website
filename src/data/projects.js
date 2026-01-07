@@ -1,0 +1,32 @@
+export const projects = [
+  {
+    id: 1,
+    title: "Secure File Vault",
+    category: "Python",
+    tech: ["Python", "Tkinter", "Cryptography"],
+    description: "A GUI-based app for encrypting and decrypting files securely.",
+    github: "https://github.com/amanchaurasia01/Secure-File-Vault",
+    live: "",
+    image: "/images/securefilevault.png",
+  },
+  {
+    id: 2,
+    title: "AI Image Filter Studio",
+    category: "React",
+    tech: ["React", "Tailwind", "Framer Motion"],
+    description: "An AI-based image filter app with brightness and HSL adjustments.",
+    github: "https://github.com/amanchaurasia01/AI-Image-Filter-Studio",
+    live: "https://ai-image-filter.vercel.app",
+    image: "/images/aiimagefilter.png",
+  },
+  {
+    id: 3,
+    title: "Network Monitoring & IDS",
+    category: "Cybersecurity",
+    tech: ["Python", "Scapy", "Socket"],
+    description: "A professional-level Intrusion Detection System built with Python.",
+    github: "https://github.com/amanchaurasia01/Network-Monitoring-IDS",
+    live: "",
+    image: "/images/nids.png",
+  },
+];
