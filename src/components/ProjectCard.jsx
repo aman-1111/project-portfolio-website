@@ -1,46 +1,45 @@
-import React from "react";
+const ProjectCard = ({ title, description, tech, github, live }) => {
+  const techArray = Array.isArray(tech) ? tech : [];
 
-const ProjectCard = ({ project }) => {
   return (
-    <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-lg p-5 transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:border-blue-500">
-      <img
-        src={project.image}
-        alt={project.title}
-        className="rounded-lg mb-4 w-full h-48 object-cover border border-gray-700"
-      />
-      <h3 className="text-xl font-semibold text-white mb-2">{project.title}</h3>
-      <p className="text-gray-300 text-sm mb-3">{project.description}</p>
+    <div className="bg-[#020617]/80 border border-blue-500/20 rounded-xl p-6 hover:scale-[1.02] transition">
+      <h3 className="text-xl font-semibold mb-2 text-blue-400">
+        {title}
+      </h3>
+
+      <p className="text-sm text-gray-300 mb-4">
+        {description}
+      </p>
 
       <div className="flex flex-wrap gap-2 mb-4">
-        {project.tech.map((t, i) => (
+        {techArray.map((t, i) => (
           <span
             key={i}
-            className="bg-gray-800 text-blue-400 text-xs px-2 py-1 rounded-md border border-gray-700"
+            className="text-xs bg-blue-500/10 text-blue-300 px-2 py-1 rounded"
           >
             {t}
           </span>
         ))}
       </div>
 
-      <div className="flex justify-between">
-        {project.github && (
+      <div className="flex gap-4">
+        {github && (
           <a
-            href={project.github}
+            href={github}
             target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-blue-400 hover:text-blue-300 font-medium"
+            className="text-sm text-white bg-gray-800 px-4 py-2 rounded hover:bg-gray-700"
           >
-            🔗 GitHub
+            GitHub
           </a>
         )}
-        {project.live && (
+
+        {live && (
           <a
-            href={project.live}
+            href={live}
             target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-green-400 hover:text-green-300 font-medium"
+            className="text-sm text-white bg-blue-600 px-4 py-2 rounded hover:bg-blue-500"
           >
-            🚀 Live Demo
+            Live
           </a>
         )}
       </div>

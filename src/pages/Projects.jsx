@@ -1,48 +1,100 @@
-import React, { useState } from "react";
-import { projects } from "../data/projects";
+import { useEffect, useState } from "react";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { motion } from "framer-motion";
+import { db } from "../firebase/firebaseConfig";
 import ProjectCard from "../components/ProjectCard";
 
+const categories = [
+  "All",
+  "Python",
+  "Machine Learning",
+  "React",
+  "Cybersecurity",
+];
+
 const Projects = () => {
-  const [filter, setFilter] = useState("all");
+  const [projects, setProjects] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const q = query(
+        collection(db, "projects"),
+        orderBy("createdAt", "desc")
+      );
+      const snapshot = await getDocs(q);
+
+      setProjects(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+      );
+    };
+
+    fetchProjects();
+  }, []);
 
   const filteredProjects =
-    filter === "all"
+    activeCategory === "All"
       ? projects
-      : projects.filter((p) => p.category.toLowerCase() === filter);
-
-  const categories = ["all", "python", "react", "cybersecurity"];
+      : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <section className="bg-gray-950 text-white py-10 min-h-screen">
-      <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold mb-8 text-center text-blue-400">
-          My Projects
-        </h2>
+    <section className="min-h-screen bg-[#020617] text-white px-6 py-20">
 
-        {/* Category Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-10">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              className={`px-5 py-2 rounded-lg text-sm font-medium border transition-all duration-300 ${
-                filter === cat
-                  ? "bg-blue-500 text-white border-blue-500 shadow-lg"
-                  : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-blue-600 hover:text-white"
-              }`}
-            >
-              {cat.charAt(0).toUpperCase() + cat.slice(1)}
-            </button>
-          ))}
-        </div>
+      {/* Heading */}
+      <motion.h2
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-4xl sm:text-5xl font-bold text-center mb-12"
+      >
+        My Projects
+      </motion.h2>
 
-        {/* Project Cards */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {filteredProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
-      </div>
+      {/* Filter Buttons */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+        className="flex flex-wrap justify-center gap-4 mb-14"
+      >
+        {categories.map((cat) => (
+          <motion.button
+            key={cat}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setActiveCategory(cat)}
+            className={`px-5 py-2 rounded-full text-sm transition
+              ${
+                activeCategory === cat
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+              }
+            `}
+          >
+            {cat}
+          </motion.button>
+        ))}
+      </motion.div>
+
+      {/* Project Grid */}
+      <motion.div
+        layout
+        className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto"
+      >
+        {filteredProjects.map((project, index) => (
+          <motion.div
+            key={project.id}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <ProjectCard {...project} />
+          </motion.div>
+        ))}
+      </motion.div>
+
     </section>
   );
 };
